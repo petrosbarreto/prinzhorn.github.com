@@ -59,8 +59,11 @@ function render() {
 
 img.onload = function() {
 	ctx.drawImage(img, 0, 0);
-	console.log('image loaded');
 };
+
+if(img.complete) {
+	img.onload();
+}
 
 canvas.onmousemove = function(e) {
 	lens.centerX = e.clientX - canvas.offsetLeft;
