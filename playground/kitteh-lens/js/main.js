@@ -15,7 +15,16 @@ ctx = canvas.getContext('2d');
 
 
 function render() {
-	ctx.drawImage(img, lastBB.left, lastBB.top, lastBB.width, lastBB.height, lastBB.left, lastBB.top, lastBB.width, lastBB.height);
+	ctx.drawImage(
+		img,
+		lastBB.left,
+		lastBB.top,
+		lastBB.width,
+		lastBB.height,
+		lastBB.left,
+		lastBB.top,
+		Math.min(lastBB.width, canvas.width - lastBB.left),
+		Math.min(lastBB.height, canvas.height - lastBB.top));
 
 	var
 		canvasData = ctx.getImageData(0, 0, canvas.width, canvas.height),
