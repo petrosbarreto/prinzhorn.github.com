@@ -27,10 +27,6 @@ function render() {
 
 	ctx.drawImage(img, lastBB.left, lastBB.top, lastBB.width, lastBB.height, lastBB.left, lastBB.top, lastBB.width, lastBB.height);
 
-	if(lastBB.left < 0) {
-		throw "kittehhh!";
-	}
-
 	var
 		canvasData = ctx.getImageData(0, 0, canvas.width, canvas.height),
 		lensData = ctx.createImageData(lens.bBox.width, lens.bBox.height);
@@ -63,7 +59,6 @@ function render() {
 
 img.onload = function() {
 	ctx.drawImage(img, 0, 0);
-	render();
 };
 
 canvas.onmousemove = function(e) {
