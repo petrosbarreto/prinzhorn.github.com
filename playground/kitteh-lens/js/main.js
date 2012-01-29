@@ -59,6 +59,7 @@ function render() {
 
 img.onload = function() {
 	ctx.drawImage(img, 0, 0);
+	console.log('image loaded');
 };
 
 canvas.onmousemove = function(e) {
