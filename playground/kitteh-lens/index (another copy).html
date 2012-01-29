@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+	<title>Kittez lens</title>
+</head>
+
+<body>
+	<canvas id="canvas" width="800" height="600"></canvas>
+	<img id="img" src="grid.jpg" style="display:none;" />
+
+	<script type="text/javascript" src="js/classes.js"></script>
+	<script type="text/javascript">
+	/* <![CDATA[ */
+	var
+		canvas = document.getElementById('canvas'),
+		img = document.getElementById('img'),
+		lens = new Lens(400, 100, 200),
+		counter = 0;
+
+	if(!canvas.getContext) {
+		alert("Sorry, no canvas for you.");
+		throw "Canvas ain't got no context";
+	}
+
+	function render() {
+		var ctx = canvas.getContext('2d');
+		ctx.drawImage(img, 0, 0);
+
+		var srcCanvasData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+		var canvasData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+		var lensData = ctx.createImageData(100, 100);
+
+		for (var x = 0; x < canvasData.width; x++) {
+			for (var y = 0; y < canvasData.height; y++) {
+				var r, g, b;
+				var p = lens.computeRefraction(x, y);
+				var iTarget = (x + y * canvas.width) * 4;
+
+				if(p[0] === x && p[1] === y) {
+					continue;
+				}
+
+				/*
+				if(p[0] < 0 || p[1] < 0 || p[0] > canvas.width || p[1] > canvas.height) {
+					r = g = b = 0xff;
+				} else {
+				*/
+					var iSrc = (p[0] + p[1] * canvas.width) * 4,
+
+					r = srcCanvasData.data[iSrc + 0];
+					g = srcCanvasData.data[iSrc + 1];
+					b = srcCanvasData.data[iSrc + 2];
+				//	}
+
+				canvasData.data[iTarget + 0] = r;
+				canvasData.data[iTarget + 1] = g;
+				canvasData.data[iTarget + 2] = b;
+			}
+		}
+
+		ctx.putImageData(canvasData, 0, 0);
+	}
+
+
+	img.onload = render;
+
+
+	canvas.onmousemove = function(e) {
+		lens.centerX = e.pageX;
+		lens.centerY = e.pageY;
+
+		render();
+	};
+
+	/*
+		Performance:
+			-Only clear bounding box of old position with kitteh image
+			-Less calculations
+	*/
+	/* ]]> */
+	</script>
+</body>
+
+</html>
