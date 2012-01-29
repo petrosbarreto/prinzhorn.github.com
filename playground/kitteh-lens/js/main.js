@@ -43,10 +43,20 @@ function render() {
 					iTarget = ((x - lens.bBox.left) + (y - lens.bBox.top) * lens.bBox.width) * 4,
 					iSource = (p[0] + p[1] * canvas.width) * 4;
 
-				lensData.data[iTarget + 0] = canvasData.data[iSource + 0];
-				lensData.data[iTarget + 1] = canvasData.data[iSource + 1];
-				lensData.data[iTarget + 2] = canvasData.data[iSource + 2];
-				lensData.data[iTarget + 3] = canvasData.data[iSource + 3];
+				//Give pixels inside the lens some blue touch
+				if(p[0] !== x || p[1] !== y) {
+					lensData.data[iTarget + 0] = canvasData.data[iSource + 0];
+					lensData.data[iTarget + 1] = canvasData.data[iSource + 1];
+					lensData.data[iTarget + 2] = canvasData.data[iSource + 2] + 15;
+					lensData.data[iTarget + 3] = canvasData.data[iSource + 3];
+				} else {
+					lensData.data[iTarget + 0] = canvasData.data[iSource + 0];
+					lensData.data[iTarget + 1] = canvasData.data[iSource + 1];
+					lensData.data[iTarget + 2] = canvasData.data[iSource + 2];
+					lensData.data[iTarget + 3] = canvasData.data[iSource + 3];
+				}
+
+
 			}
 		}
 	}
