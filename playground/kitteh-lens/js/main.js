@@ -15,16 +15,21 @@ ctx = canvas.getContext('2d');
 
 
 function render() {
-	ctx.drawImage(
-		img,
-		lastBB.left,
-		lastBB.top,
-		lastBB.width,
-		lastBB.height,
-		lastBB.left,
-		lastBB.top,
-		Math.min(lastBB.width, canvas.width - lastBB.left),
-		Math.min(lastBB.height, canvas.height - lastBB.top));
+	if(lastBB.right > canvas.width) {
+		lastBB.right = canvas.width;
+	}
+
+	if(lastBB.bottom > canvas.height) {
+		lastBB.bottom = canvas.height;
+	}
+
+	lastBB.update();
+
+	ctx.drawImage(img, lastBB.left, lastBB.top, lastBB.width, lastBB.height, lastBB.left, lastBB.top, lastBB.width, lastBB.height);
+
+	if(lastBB.left < 0) {
+		throw "kittehhh!";
+	}
 
 	var
 		canvasData = ctx.getImageData(0, 0, canvas.width, canvas.height),
